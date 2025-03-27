@@ -3,8 +3,7 @@
 </template>
 
 <script>
-import Leaderboard from './components/leader-board.vue';
-import 'font-awesome/css/font-awesome.min.css';
+import Leaderboard from './components/leaderboard.vue'
 
 export default {
   name: 'App',
