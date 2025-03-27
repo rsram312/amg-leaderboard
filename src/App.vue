@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import Leaderboard from './components/leaderboard.vue'
+import Leaderboard from './components/leader-board.vue'
 
 export default {
   name: 'App',

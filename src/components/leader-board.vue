@@ -103,9 +103,12 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(player, index) in playerBreakup" :key="index">
-              <td>{{ player.name }}</td>
-              <td>{{ player.points }}</td>
+            <tr v-for="(player, index) in playerBreakup" :key="index" :class="getRowClass(index)">
+              <td class="player-name">{{ player.name }}
+                <span v-if="isCaptain(playerBreakup, index)"> (C)</span>
+                <span v-else-if="isViceCaptain(playerBreakup, index)"> (VC)</span>
+              </td>
+              <td class="player-points">{{ player.points }}</td>
             </tr>
           </tbody>
         </table>
@@ -308,6 +311,29 @@ function getColumnLetter(colIndex) {
     colIndex = Math.floor((colIndex - mod) / 26);
   }
   return letter;
+}
+
+// Helper to determine row class for styling
+const getRowClass = (index) => {
+  return index < 4 ? 'bold-row' : ''
+}
+
+// Get the highest value for first 2 and next 2 rows
+function highestFirstTwo(playerData) {
+  return Math.max(playerData[0]?.points || 0, playerData[1]?.points || 0)
+}
+
+function highestNextTwo(playerData) {
+  return Math.max(playerData[2]?.points || 0, playerData[3]?.points || 0)
+}
+
+// Check if a row is captain (C) or vice-captain (VC)
+const isCaptain = (playerBreakup, index) => {
+  return index < 2 && playerBreakup[index]?.points == highestFirstTwo(playerBreakup)
+}
+
+const isViceCaptain = (playerBreakup, index) => {
+  return index >= 2 && index < 4 && playerBreakup[index]?.points == highestNextTwo(playerBreakup)
 }
 
 onMounted(() => {
@@ -754,6 +780,15 @@ td {
     font-size: 12px;
     margin-top: 12px;
   }
+}
+
+.bold-row {
+  font-weight: bold;
+}
+
+.player-name span {
+  color: #28a745;
+  font-weight: bold;
 }
 
 </style>
